@@ -1,4 +1,4 @@
-package com.example.doanbe.models;
+package com.example.doanbe.entity;
 
 
 import jakarta.persistence.*;
@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(
@@ -43,6 +43,10 @@ public class User {
     @NotBlank
     @Size(min = 6, max =100)
     private String password;
+
+    private String oneTimePassword;
+    private boolean isVerified = false;
+    private LocalDateTime otpExpiryTime;
 
     @OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL)
     @JoinColumn(name = "role_id", referencedColumnName = "id")

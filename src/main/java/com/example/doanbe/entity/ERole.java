@@ -1,4 +1,4 @@
-package com.example.doanbe.models;
+package com.example.doanbe.entity;
 
 public enum ERole {
     ROLE_USER,

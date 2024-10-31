@@ -1,7 +1,7 @@
 package com.example.doanbe.repository;
 
-import com.example.doanbe.models.ERole;
-import com.example.doanbe.models.Role;
+import com.example.doanbe.entity.ERole;
+import com.example.doanbe.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

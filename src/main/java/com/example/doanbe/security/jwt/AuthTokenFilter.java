@@ -1,6 +1,6 @@
 package com.example.doanbe.security.jwt;
 
-import com.example.doanbe.security.services.UserServiceImpl;
+import com.example.doanbe.security.services.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserDetailsServiceImpl userService;
 
 
     @Override

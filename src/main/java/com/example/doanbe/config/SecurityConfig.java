@@ -3,7 +3,7 @@ package com.example.doanbe.config;
 
 import com.example.doanbe.security.jwt.AuthEntryPointJwt;
 import com.example.doanbe.security.jwt.AuthTokenFilter;
-import com.example.doanbe.security.services.UserServiceImpl;
+import com.example.doanbe.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig{
 
     @Autowired
-    UserServiceImpl userService;
+    UserDetailsServiceImpl userService;
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
 

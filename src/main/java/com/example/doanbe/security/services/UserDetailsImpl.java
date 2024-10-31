@@ -1,6 +1,6 @@
 package com.example.doanbe.security.services;
 
-import com.example.doanbe.models.User;
+import com.example.doanbe.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -35,7 +35,7 @@ public class UserDetailsImpl implements UserDetails {
 
     public static UserDetailsImpl build(User user) {
         List<GrantedAuthority> authorities = Arrays.asList(
-                new SimpleGrantedAuthority(user.getRole().getName().name())
+                new SimpleGrantedAuthority(user.getRole().getName().toString())
         );
 
         return new UserDetailsImpl(

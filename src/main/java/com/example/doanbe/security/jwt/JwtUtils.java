@@ -2,7 +2,6 @@ package com.example.doanbe.security.jwt;
 
 
 import com.example.doanbe.security.services.UserDetailsImpl;
-import com.example.doanbe.security.services.UserServiceImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import org.slf4j.Logger;
@@ -16,6 +15,8 @@ import java.util.Date;
 import java.security.Key;
 import io.jsonwebtoken.security.Keys;
 
+import javax.crypto.SecretKey;
+
 
 @Component
 public class JwtUtils {
@@ -26,32 +27,45 @@ public class JwtUtils {
     private String jwtSecret;
 
 
-    @Value("${app.jwtExpiration")
-    private String jwtExpirationMs;
+    @Value("${app.jwtExpirationMs}")
+    private int jwtExpirationMs;
 
     public String generateJwtToken(Authentication authentication) {
-
+        logger.error("Test 1", "1");
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+        SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
 
         return Jwts.builder()
-                .setSubject((userPrincipal.getUsername()))
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                .signWith(key(), SignatureAlgorithm.HS256)
+                .subject(userPrincipal.getUsername())
+                .issuedAt(new Date())
+                .expiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .signWith(key)
                 .compact();
     }
 
-    private Key key() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
-    }
+//    private Key key() {
+//        logger.error("Unauthorized error1: {}", "null");
+//        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+//    }
 
     public String getUserNameFromJwtToken(String token) {
-        return Jwts.parser().setSigningKey(key()).build().parseClaimsJws(token).getBody().getSubject();
+        SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+
+        return Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
     }
 
     public boolean validateJwtToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(key()).build().parse(authToken);
+            SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+            Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parse(authToken);
             return true;
         } catch (MalformedJwtException e) {
             logger.error("Invalid JWT token: {}", e.getMessage());

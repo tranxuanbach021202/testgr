@@ -1,6 +1,6 @@
 package com.example.doanbe.repository;
 
-import com.example.doanbe.models.User;
+import com.example.doanbe.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +12,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
     Boolean existsByUsername(String username);
     Boolean existsByEmail(String email);
+    Optional<User> findByEmailAndOneTimePassword(String email, String oneTimePassword);
 }

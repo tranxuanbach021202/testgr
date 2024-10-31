@@ -1,48 +1,35 @@
 package com.example.doanbe.controllers;
 
-import com.example.doanbe.models.ERole;
-import com.example.doanbe.models.Role;
-import com.example.doanbe.models.User;
 import com.example.doanbe.payload.request.LoginRequest;
 import com.example.doanbe.payload.request.SignupRequest;
-import com.example.doanbe.payload.response.JwtResponse;
-import com.example.doanbe.payload.response.MessageResponse;
-import com.example.doanbe.repository.RoleRepository;
-import com.example.doanbe.repository.UserRepository;
-import com.example.doanbe.security.jwt.JwtUtils;
-import com.example.doanbe.security.services.UserDetailsImpl;
+import com.example.doanbe.security.services.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
+@RestController
+@RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthService authService;
 
-    @Autowired
-    UserRepository userRepository;
 
-    @Autowired
-    RoleRepository roleRepository;
+    @PostMapping("/signup")
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signupRequest) {
+        return authService.registerUser(signupRequest);
+    }
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    @PostMapping("/signin")
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+        return authService.authenticateUser(loginRequest);
+    }
 
-    @Autowired
-    JwtUtils jwtUtils;
+
 
 
 
